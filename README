@@ -18,9 +18,7 @@ to develop an efficient application through modules, each of one as application.
             --ModuleX.js
        --app.js
 
-
 -- Application should extend from Ext.app.BundledApplication class and define theirs modules.
-
 Ext.application({
     name: 'Provider',
     appFolder: 'app',
@@ -40,7 +38,6 @@ Ext.application({
 
 -- the module file ( Statistics.js ) in folder module should extend from Ext.app.BundledApplication ...
 -- the module also is structured like MVC or MVVM pattern.
-
 Ext.define('Provider.module.Statistics', {
     extend: 'Ext.app.BundledApplication', //here
     name:'Statistics',
@@ -51,5 +48,4 @@ Ext.define('Provider.module.Statistics', {
 })
 
 This mechanism provide modules at any level of depth. ex.( Modules that contain other modules inside).
-
 Enjoy it!
