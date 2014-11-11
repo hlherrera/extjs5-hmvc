@@ -1,6 +1,6 @@
 An example of creating an hierarchical extjs-5.0.x application.
 
-If you have to create a bigger application in ExtJs, here you have an option
+If you have to create a big application in ExtJs, here you have an option
 to develop an efficient application through modules, each as an application.
 
 -- Application structure folder:
@@ -10,12 +10,14 @@ to develop an efficient application through modules, each as an application.
        --store
        --view
        --module
+            ...
             --moduleX
                    --controller
                    --model
                    --store
                    --view
             --ModuleX.js
+            ...
        --app.js
 
 -- Application should extend from Ext.app.BundledApplication class and define his modules.
@@ -46,6 +48,14 @@ Ext.define('Provider.module.Statistics', {
         console.log('- Init Module: Statistics')
     }
 })
+
+Notes:
+If name property in the module is absent, then application name would be the last part of class name.
+  ex. ("application class name" = "Master.module.InnerMaster") --> ("application name" = "InnerMaster")
+and should work with (InnerMaster) alias inside the module.
+
+If name is provided, you should rename the app folder to that name.
+   ex. ("application name"  = "MyName") --> ("application folder = "MyName")
 
 This mechanism provides the modules at any level of depth. ex. (modules that contain others).
 Enjoy it!

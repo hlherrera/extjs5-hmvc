@@ -14,13 +14,20 @@ Ext.define('Ext.app.BundledApplication', {
             viewportClass = data.autoCreateViewport,
             onBeforeClassCreated, paths, namespace, ns, appFolder;
 
-
         var isApplication = cls.$className.split('.').pop() === '$application';
-        // Ordinary inheritance does not work here so we colle
-        // necessary data from current class data and its superclass
-        namespace = data.name || cls.superclass.name;
+        //if name is not provided, then assign "short" $className as name.
+        namespace = data.name || cls.superclass.name || (!isApplication && cls.$className.split('.').pop());
+        //re-assign name and if is application
+        data.name = namespace;
+        data.isApplication = isApplication;
+
         if (!isApplication) {
-            appFolder = [cls.superclass.appFolder, 'module', data.appFolder || data.$namespace].join('/');
+            ns = cls.$className.replace(['', 'module', namespace].join('.'), '');
+            appFolder = [
+                Ext.Loader.getPath(ns),
+                'module',
+                data.appFolder || namespace
+            ].join('/');
         } else {
             appFolder = data.appFolder || cls.superclass.appFolder;
         }
@@ -70,9 +77,6 @@ Ext.define('Ext.app.BundledApplication', {
             Controller.processDependencies(proto, requires, namespace, 'view', viewportClass);
         }
 
-        if (data.modules && data.modules.length > 0) {
-            proto.isModule = true;
-        }
         Controller.processDependencies(proto, requires, namespace, 'module', data.modules);
 
         // Any "requires" also have to be processed before we fire up the App instance.

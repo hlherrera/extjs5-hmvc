@@ -5,6 +5,7 @@ Ext.define('CRM.CustomerProvider.module.Master', {
     extend: 'Ext.app.BundledApplication',
     name: 'Master',
     controllers: ['CInner', 'CInner2'],
+    modules: ['InnerMaster'],
     init: function () {
         console.log('- Init Module Master')
     }

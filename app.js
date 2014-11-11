@@ -1,4 +1,4 @@
-Ext.Loader.setPath('Ext.app', './');
+//Ext.Loader.setPath('Ext.app', './');
 
 Ext.application({
     name: 'CRM.CustomerProvider',
