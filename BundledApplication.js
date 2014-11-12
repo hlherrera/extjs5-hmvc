@@ -7,6 +7,8 @@ Ext.define('Ext.app.BundledApplication', {
     extend: 'Ext.app.Application',
     autoCreateViewport: false,
     namespace: true, //to avoid warn msg
+    depth: 0,
+    isModule: false,
     onClassExtended: function (cls, data, hooks) {
         var Controller = Ext.app.Controller,
             proto = cls.prototype,
@@ -17,9 +19,10 @@ Ext.define('Ext.app.BundledApplication', {
         var isApplication = cls.$className.split('.').pop() === '$application';
         //if name is not provided, then assign "short" $className as name.
         namespace = data.name || cls.superclass.name || (!isApplication && cls.$className.split('.').pop());
-        //re-assign name and if is application
+        //re-assign name property
         data.name = namespace;
-        data.isApplication = isApplication;
+        //data.isApplication = isApplication;
+        data.isModule = !isApplication;
 
         if (!isApplication) {
             ns = cls.$className.replace(['', 'module', namespace].join('.'), '');
@@ -45,9 +48,7 @@ Ext.define('Ext.app.BundledApplication', {
             if (namespace && appFolder) {
                 Ext.Loader.setPath(namespace, appFolder);
             }
-
             paths = data.paths;
-
             if (paths) {
                 for (ns in paths) {
                     if (paths.hasOwnProperty(ns)) {
@@ -63,7 +64,7 @@ Ext.define('Ext.app.BundledApplication', {
         if (viewportClass) {
             //<debug>
             if (!namespace) {
-                Ext.Error.raise("[Ext.app.Application] Can't resolve namespace for " +
+                Ext.Error.raise("[Ext.app.BundledApplication] Can't resolve namespace for " +
                 data.$className + ", did you forget to specify 'name' property?");
             }
             //</debug>
@@ -78,7 +79,6 @@ Ext.define('Ext.app.BundledApplication', {
         }
 
         Controller.processDependencies(proto, requires, namespace, 'module', data.modules);
-
         // Any "requires" also have to be processed before we fire up the App instance.
         if (requires.length) {
             onBeforeClassCreated = hooks.onBeforeCreated;
@@ -92,7 +92,6 @@ Ext.define('Ext.app.BundledApplication', {
             };
         }
     },
-
     /**
      * Creates new Application.
      * @param {Object} [config] Config object.
@@ -104,20 +103,24 @@ Ext.define('Ext.app.BundledApplication', {
         me.callParent(arguments);
     },
     getModule: function (name, /* private */ preventCreate) {
-        var me = this,
-            className, module;
+        var me = this, module, depth = 1;
 
-        if (!module && !preventCreate) {
+        if (!preventCreate) {
+            var _app = me,
             className = me.getModuleClassName(name, 'module');
+
+            while (_app.hasOwnProperty('application')) {
+                _app = _app.application;
+                depth++;
+            }
 
             module = Ext.create(className, {
                 application: me,
+                depth: depth,
                 moduleClassName: name
             });
-
             me._modules.add(module);
         }
-
         return module;
     }
 });

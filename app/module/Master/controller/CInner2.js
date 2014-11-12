@@ -4,6 +4,10 @@ Ext.define('Master.controller.CInner2', {
      'CRM.CustomerProvider.module.Master.c'
      ],*/
     init: function () {
-        console.log("-- Init Module Master's CInner 2 controller");
+        var _s = '';
+        for (var i = 0; i < this.application.depth; i++) {
+            _s += '-- ';
+        }
+        console.log(_s + "- Init Module Master's CInner 2 controller.");
     }
 });

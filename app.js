@@ -1,4 +1,4 @@
-//Ext.Loader.setPath('Ext.app', './');
+Ext.Loader.setPath('Ext.app', './');
 
 Ext.application({
     name: 'CRM.CustomerProvider',
@@ -18,26 +18,23 @@ Ext.application({
     ],
     modules: ['Master'],
     launch: function () {
-        this.test = function () {
-            console.log('test');
-            Ext.create('widget.window', {
-                height: 300,
-                width: 600,
-                title: 'Constraining Window, plain: true',
-                closable: false,
-                layout: 'border',
-                items: [
-                    {
-                        region: 'center',
-                        xtype: 'core-MasterView'
-                    },
-                    {
-                        region: 'east',
-                        xtype: 'core-DetailView'
-                    }]
-            }).show();
-        };
-        this.test();
-        console.log('.App Launched.');
+        Ext.create('widget.window', {
+            height: 300,
+            width: 600,
+            title: 'Constraining Window, plain: true',
+            closable: false,
+            layout: 'border',
+            items: [
+                {
+                    region: 'center',
+                    xtype: 'core-MasterView'
+                },
+                {
+                    region: 'east',
+                    xtype: 'core-DetailView'
+                }]
+        }).show();
+
+        console.log((this.isModule ? 'Module' : 'App') + ' example launched.');
     }
 });

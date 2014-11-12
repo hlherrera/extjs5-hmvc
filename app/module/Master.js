@@ -7,6 +7,10 @@ Ext.define('CRM.CustomerProvider.module.Master', {
     controllers: ['CInner', 'CInner2'],
     modules: ['InnerMaster'],
     init: function () {
-        console.log('- Init Module Master')
+        var _s = '';
+        for (var i = 0; i < this.depth; i++) {
+            _s += '-- ';
+        }
+        console.log(_s + 'Init Module Master.');
     }
 });

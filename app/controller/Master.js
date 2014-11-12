@@ -9,7 +9,11 @@ Ext.define('CRM.CustomerProvider.controller.Master', {
                 select: this.onGridSelect
             }
         });
-        console.log('- Init App Master Controller');
+        var _s = '';
+        for (var i = 0; i < this.application.depth; i++) {
+            _s += '-- ';
+        }
+        console.log(_s + '- Init App Master Controller.');
     },
 
     onGridSelect: function (grid, record, index, eOpts) {
